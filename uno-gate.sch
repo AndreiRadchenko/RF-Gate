@@ -1,0 +1,736 @@
+EESchema Schematic File Version 4
+LIBS:esp12e-toilet-sensor-cache
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Jumper:Jumper_2_Open JP1
+U 1 1 5D61CE34
+P 6750 2100
+F 0 "JP1" H 6750 2335 50  0000 C CNN
+F 1 "FLASH" H 6750 2244 50  0000 C CNN
+F 2 "" H 6750 2100 50  0001 C CNN
+F 3 "~" H 6750 2100 50  0001 C CNN
+	1    6750 2100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR?
+U 1 1 5D6243F0
+P 8200 800
+F 0 "#PWR?" H 8200 650 50  0001 C CNN
+F 1 "+3.3V" H 8215 973 50  0000 C CNN
+F 2 "" H 8200 800 50  0001 C CNN
+F 3 "" H 8200 800 50  0001 C CNN
+	1    8200 800 
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP_Small C1
+U 1 1 5D625D56
+P 7200 2400
+F 0 "C1" H 7150 2700 50  0000 L CNN
+F 1 "47mkF" H 7000 2600 50  0000 L CNN
+F 2 "" H 7200 2400 50  0001 C CNN
+F 3 "~" H 7200 2400 50  0001 C CNN
+	1    7200 2400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Relay:DIPxx-1Cxx-51x K?
+U 1 1 5D6287CD
+P 2800 1450
+F 0 "K?" V 2233 1450 50  0000 C CNN
+F 1 "Relay 1 (Light)" V 2324 1450 50  0000 C CNN
+F 2 "Relay_THT:Relay_StandexMeder_DIP_LowProfile" H 3250 1400 50  0001 L CNN
+F 3 "https://standexelectronics.com/wp-content/uploads/datasheet_reed_relay_DIP.pdf" H 2800 1450 50  0001 C CNN
+	1    2800 1450
+	0    -1   1    0   
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 5D64500B
+P 8000 800
+F 0 "#PWR?" H 8000 650 50  0001 C CNN
+F 1 "+5V" H 8015 973 50  0000 C CNN
+F 2 "" H 8000 800 50  0001 C CNN
+F 3 "" H 8000 800 50  0001 C CNN
+	1    8000 800 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8200 800  8200 1100
+$Comp
+L Device:R R5
+U 1 1 5D6538FB
+P 6650 2500
+F 0 "R5" H 6720 2546 50  0000 L CNN
+F 1 "5k1" H 6720 2455 50  0000 L CNN
+F 2 "" V 6580 2500 50  0001 C CNN
+F 3 "~" H 6650 2500 50  0001 C CNN
+	1    6650 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R1
+U 1 1 5D65705E
+P 4000 1500
+F 0 "R1" H 3930 1454 50  0000 R CNN
+F 1 "5k1" H 3930 1545 50  0000 R CNN
+F 2 "" V 3930 1500 50  0001 C CNN
+F 3 "~" H 4000 1500 50  0001 C CNN
+	1    4000 1500
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector:Conn_01x04_Female J1
+U 1 1 5D6588E9
+P 8550 1700
+F 0 "J1" H 8500 2050 50  0000 L CNN
+F 1 "FLASH" H 8500 1950 50  0000 L CNN
+F 2 "" H 8550 1700 50  0001 C CNN
+F 3 "~" H 8550 1700 50  0001 C CNN
+	1    8550 1700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8350 1600 8200 1600
+Wire Wire Line
+	8200 1600 8200 1100
+Connection ~ 8200 1100
+$Comp
+L power:GNDD #PWR?
+U 1 1 5D66442B
+P 8200 3100
+F 0 "#PWR?" H 8200 2850 50  0001 C CNN
+F 1 "GNDD" H 8204 2945 50  0000 C CNN
+F 2 "" H 8200 3100 50  0001 C CNN
+F 3 "" H 8200 3100 50  0001 C CNN
+	1    8200 3100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8200 1900 8350 1900
+$Comp
+L Relay:DIPxx-1Cxx-51x K?
+U 1 1 5D66C7DD
+P 2800 2550
+F 0 "K?" V 2233 2550 50  0000 C CNN
+F 1 "Relay 2 (Went)" V 2324 2550 50  0000 C CNN
+F 2 "Relay_THT:Relay_StandexMeder_DIP_LowProfile" H 3250 2500 50  0001 L CNN
+F 3 "https://standexelectronics.com/wp-content/uploads/datasheet_reed_relay_DIP.pdf" H 2800 2550 50  0001 C CNN
+	1    2800 2550
+	0    -1   1    0   
+$EndComp
+Wire Wire Line
+	3450 1250 3450 2200
+Wire Wire Line
+	3850 1100 3850 2400
+Wire Wire Line
+	3600 2000 3600 2350
+Wire Wire Line
+	3450 2200 4400 2200
+Wire Wire Line
+	8200 1900 8200 2400
+Wire Wire Line
+	8350 2400 8200 2400
+Connection ~ 8200 2400
+Wire Wire Line
+	8200 2400 8200 2900
+Wire Wire Line
+	8350 2700 8100 2700
+Wire Wire Line
+	8100 2700 8100 1100
+Connection ~ 8100 1100
+Wire Wire Line
+	8100 1100 8200 1100
+Wire Wire Line
+	8350 2800 8100 2800
+Connection ~ 8100 2700
+Wire Wire Line
+	8100 2800 8100 2700
+$Comp
+L Connector:Conn_01x08_Female J2
+U 1 1 5D61F60C
+P 8550 2600
+F 0 "J2" H 8500 3150 50  0000 L CNN
+F 1 "Sensors" H 8500 3050 50  0000 L CNN
+F 2 "" H 8550 2600 50  0001 C CNN
+F 3 "~" H 8550 2600 50  0001 C CNN
+	1    8550 2600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8350 2900 8200 2900
+Wire Wire Line
+	8350 2300 8000 2300
+Wire Wire Line
+	8000 2300 8000 800 
+$Comp
+L Device:C_Small C2
+U 1 1 5D680269
+P 7400 2400
+F 0 "C2" H 7350 2700 50  0000 L CNN
+F 1 "100nF" H 7350 2600 50  0000 L CNN
+F 2 "" H 7400 2400 50  0001 C CNN
+F 3 "~" H 7400 2400 50  0001 C CNN
+	1    7400 2400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6200 1700 8350 1700
+Wire Wire Line
+	6200 1800 8350 1800
+Wire Wire Line
+	7200 2300 7400 2300
+Connection ~ 7400 2300
+$Comp
+L Device:R R4
+U 1 1 5D68EFB4
+P 6400 2500
+F 0 "R4" H 6470 2546 50  0000 L CNN
+F 1 "10k" H 6470 2455 50  0000 L CNN
+F 2 "" V 6330 2500 50  0001 C CNN
+F 3 "~" H 6400 2500 50  0001 C CNN
+	1    6400 2500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6200 2100 6550 2100
+Wire Wire Line
+	6650 2300 6650 2350
+Wire Wire Line
+	6200 2300 6650 2300
+Wire Wire Line
+	6200 1900 6400 1900
+Wire Wire Line
+	6400 1900 6400 2350
+Wire Wire Line
+	6400 1900 7850 1900
+Wire Wire Line
+	7850 1900 7850 2500
+Wire Wire Line
+	7850 2500 8350 2500
+Connection ~ 6400 1900
+Wire Wire Line
+	7400 2300 8000 2300
+Connection ~ 8000 2300
+$Comp
+L Device:R R3
+U 1 1 5D69A2B2
+P 6300 1500
+F 0 "R3" H 6370 1546 50  0000 L CNN
+F 1 "10k" H 6370 1455 50  0000 L CNN
+F 2 "" V 6230 1500 50  0001 C CNN
+F 3 "~" H 6300 1500 50  0001 C CNN
+	1    6300 1500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6200 2000 6300 2000
+Wire Wire Line
+	6300 2000 6300 1650
+Wire Wire Line
+	6300 1350 6300 1100
+Connection ~ 6300 1100
+Wire Wire Line
+	6300 1100 8100 1100
+Wire Wire Line
+	6300 2000 7750 2000
+Wire Wire Line
+	7750 2000 7750 2600
+Wire Wire Line
+	7750 2600 8350 2600
+Connection ~ 6300 2000
+Text Label 8650 2500 0    50   ~ 0
+PIR_(High_active)
+Text Label 8650 2600 0    50   ~ 0
+Proximity_(Low_active)
+Text Label 8650 3000 0    50   ~ 0
+DHT11_(One_wire)
+Wire Wire Line
+	3600 2000 4400 2000
+Wire Wire Line
+	3850 1100 4000 1100
+Wire Wire Line
+	3850 2400 4400 2400
+Wire Wire Line
+	4000 1900 4000 1650
+Wire Wire Line
+	4000 1900 4400 1900
+Wire Wire Line
+	4000 1350 4000 1100
+Connection ~ 4000 1100
+Wire Wire Line
+	4000 1100 4250 1100
+$Comp
+L Device:R R2
+U 1 1 5D6AA2F4
+P 4250 1500
+F 0 "R2" H 4180 1454 50  0000 R CNN
+F 1 "10k" H 4180 1545 50  0000 R CNN
+F 2 "" V 4180 1500 50  0001 C CNN
+F 3 "~" H 4250 1500 50  0001 C CNN
+	1    4250 1500
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4400 2100 4250 2100
+Wire Wire Line
+	4250 2100 4250 1650
+Wire Wire Line
+	4250 1350 4250 1100
+Connection ~ 4250 1100
+Wire Wire Line
+	4250 1100 6300 1100
+Wire Wire Line
+	8350 3000 4250 3000
+Wire Wire Line
+	4250 3000 4250 2100
+Connection ~ 4250 2100
+$Comp
+L ESP12:ESP-12E U1
+U 1 1 5D617D3D
+P 5300 2000
+F 0 "U1" H 5300 2765 50  0000 C CNN
+F 1 "ESP-12E" H 5300 2674 50  0000 C CNN
+F 2 "" H 5300 2000 50  0001 C CNN
+F 3 "http://l0l.org.uk/2014/12/esp8266-modules-hardware-guide-gotta-catch-em-all/" H 5300 2000 50  0001 C CNN
+	1    5300 2000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7400 2500 7400 2800
+Wire Wire Line
+	7200 2500 7200 2800
+Wire Wire Line
+	6950 2100 6950 2800
+Wire Wire Line
+	6650 2650 6650 2800
+Wire Wire Line
+	6400 2650 6400 2800
+Wire Wire Line
+	6200 2400 6200 2800
+$Comp
+L power:GNDD #PWR?
+U 1 1 5D68E4BF
+P 6400 2800
+F 0 "#PWR?" H 6400 2550 50  0001 C CNN
+F 1 "GNDD" H 6404 2645 50  0001 C CNN
+F 2 "" H 6400 2800 50  0001 C CNN
+F 3 "" H 6400 2800 50  0001 C CNN
+	1    6400 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 5D68C0F9
+P 7400 2800
+F 0 "#PWR?" H 7400 2550 50  0001 C CNN
+F 1 "GNDD" H 7404 2645 50  0001 C CNN
+F 2 "" H 7400 2800 50  0001 C CNN
+F 3 "" H 7400 2800 50  0001 C CNN
+	1    7400 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 5D68B9B0
+P 7200 2800
+F 0 "#PWR?" H 7200 2550 50  0001 C CNN
+F 1 "GNDD" H 7204 2645 50  0001 C CNN
+F 2 "" H 7200 2800 50  0001 C CNN
+F 3 "" H 7200 2800 50  0001 C CNN
+	1    7200 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 5D663C09
+P 6950 2800
+F 0 "#PWR?" H 6950 2550 50  0001 C CNN
+F 1 "GNDD" H 6954 2645 50  0001 C CNN
+F 2 "" H 6950 2800 50  0001 C CNN
+F 3 "" H 6950 2800 50  0001 C CNN
+	1    6950 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 5D663819
+P 6200 2800
+F 0 "#PWR?" H 6200 2550 50  0001 C CNN
+F 1 "GNDD" H 6204 2645 50  0001 C CNN
+F 2 "" H 6200 2800 50  0001 C CNN
+F 3 "" H 6200 2800 50  0001 C CNN
+	1    6200 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 5D624BF9
+P 6650 2800
+F 0 "#PWR?" H 6650 2550 50  0001 C CNN
+F 1 "GNDD" H 6654 2645 50  0001 C CNN
+F 2 "" H 6650 2800 50  0001 C CNN
+F 3 "" H 6650 2800 50  0001 C CNN
+	1    6650 2800
+	1    0    0    -1  
+$EndComp
+Text Label 8650 2300 0    50   ~ 0
+VCC_(5V)
+Text Label 8650 2400 0    50   ~ 0
+GND
+Text Label 8650 2700 0    50   ~ 0
+VCC_(3.3V)
+Text Label 8650 2800 0    50   ~ 0
+VCC_(3.3V)
+Text Label 8650 2900 0    50   ~ 0
+GND
+Text Label 8600 1700 0    50   ~ 0
+RX
+Text Label 8600 1800 0    50   ~ 0
+TX
+Text Label 8600 1900 0    50   ~ 0
+GND
+Text Label 8600 1600 0    50   ~ 0
+VCC_(3.3V)
+Wire Wire Line
+	3100 1250 3450 1250
+Wire Wire Line
+	3100 2350 3600 2350
+Wire Wire Line
+	8200 2900 8200 3100
+Connection ~ 8200 2900
+$Comp
+L arduino:Arduino_Uno_Shield XA?
+U 1 1 5DF25C1D
+P 14350 4750
+F 0 "XA?" H 14350 6137 60  0000 C CNN
+F 1 "Arduino_Uno_Shield" H 14350 6031 60  0000 C CNN
+F 2 "" H 16150 8500 60  0001 C CNN
+F 3 "https://store.arduino.cc/arduino-uno-rev3" H 16150 8500 60  0001 C CNN
+	1    14350 4750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Relay:DIPxx-1Cxx-51x K&
+U 1 1 5DF48177
+P 18850 4250
+F 0 "K&" V 18283 4250 50  0001 C CNN
+F 1 "Relay 2 (left leaf)" V 18374 4250 50  0000 C CNN
+F 2 "Relay_THT:Relay_StandexMeder_DIP_LowProfile" H 19300 4200 50  0001 L CNN
+F 3 "https://standexelectronics.com/wp-content/uploads/datasheet_reed_relay_DIP.pdf" H 18850 4250 50  0001 C CNN
+	1    18850 4250
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Relay:DIPxx-1Cxx-51x K?
+U 1 1 5DF577D6
+P 18850 5300
+F 0 "K?" V 18283 5300 50  0001 C CNN
+F 1 "Relay 3 (Right leaf)" V 18374 5300 50  0000 C CNN
+F 2 "Relay_THT:Relay_StandexMeder_DIP_LowProfile" H 19300 5250 50  0001 L CNN
+F 3 "https://standexelectronics.com/wp-content/uploads/datasheet_reed_relay_DIP.pdf" H 18850 5300 50  0001 C CNN
+	1    18850 5300
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Relay:DIPxx-1Cxx-51x K?
+U 1 1 5DF577DC
+P 18850 6400
+F 0 "K?" V 18283 6400 50  0001 C CNN
+F 1 "Relay 4 (Right leaf)" V 18374 6400 50  0000 C CNN
+F 2 "Relay_THT:Relay_StandexMeder_DIP_LowProfile" H 19300 6350 50  0001 L CNN
+F 3 "https://standexelectronics.com/wp-content/uploads/datasheet_reed_relay_DIP.pdf" H 18850 6400 50  0001 C CNN
+	1    18850 6400
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Relay:DIPxx-1Cxx-51x K&?
+U 1 1 5DF61A10
+P 18850 3200
+F 0 "K&?" V 18283 3200 50  0001 C CNN
+F 1 "Relay 1 (left leaf)" V 18374 3200 50  0000 C CNN
+F 2 "Relay_THT:Relay_StandexMeder_DIP_LowProfile" H 19300 3150 50  0001 L CNN
+F 3 "https://standexelectronics.com/wp-content/uploads/datasheet_reed_relay_DIP.pdf" H 18850 3200 50  0001 C CNN
+	1    18850 3200
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	17900 6100 18550 6100
+Wire Wire Line
+	18550 5000 17900 5000
+Connection ~ 17900 5000
+Wire Wire Line
+	17900 5000 17900 6100
+Wire Wire Line
+	18550 3950 17900 3950
+Connection ~ 17900 3950
+Wire Wire Line
+	17900 3950 17900 5000
+Wire Wire Line
+	18550 6300 18000 6300
+Wire Wire Line
+	18550 5200 18000 5200
+Connection ~ 18000 5200
+Wire Wire Line
+	18000 5200 18000 6300
+Connection ~ 18000 4150
+Wire Wire Line
+	18000 4150 18000 5200
+Wire Wire Line
+	18550 4150 18000 4150
+Wire Wire Line
+	18000 3100 18000 4150
+Wire Wire Line
+	17900 2900 17900 3950
+Wire Wire Line
+	17900 2350 17900 2900
+Connection ~ 17900 2900
+Wire Wire Line
+	18550 2900 17900 2900
+Wire Wire Line
+	18550 3100 18000 3100
+$Comp
+L power:+12V #PWR?
+U 1 1 5DF9664F
+P 17900 2350
+F 0 "#PWR?" H 17900 2200 50  0001 C CNN
+F 1 "+12V" H 17915 2523 50  0000 C CNN
+F 2 "" H 17900 2350 50  0001 C CNN
+F 3 "" H 17900 2350 50  0001 C CNN
+	1    17900 2350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Motor:Motor_DC_ALT M?
+U 1 1 5DFA034D
+P 20050 3650
+F 0 "M?" H 20197 3646 50  0000 L CNN
+F 1 "Motor_DC_ALT" H 20197 3555 50  0000 L CNN
+F 2 "" H 20050 3560 50  0001 C CNN
+F 3 "~" H 20050 3560 50  0001 C CNN
+	1    20050 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Motor:Motor_DC_ALT M?
+U 1 1 5DFA1B40
+P 20100 5700
+F 0 "M?" H 20247 5696 50  0000 L CNN
+F 1 "Motor_DC_ALT" H 20247 5605 50  0000 L CNN
+F 2 "" H 20100 5610 50  0001 C CNN
+F 3 "~" H 20100 5610 50  0001 C CNN
+	1    20100 5700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	19150 3000 20050 3000
+Wire Wire Line
+	20050 3000 20050 3450
+Wire Wire Line
+	20050 3950 20050 4050
+Wire Wire Line
+	20050 4050 19150 4050
+Wire Wire Line
+	19150 5100 20100 5100
+Wire Wire Line
+	20100 5100 20100 5500
+Wire Wire Line
+	20100 6000 20100 6200
+Wire Wire Line
+	20100 6200 19150 6200
+Wire Wire Line
+	17650 3900 17650 3400
+Wire Wire Line
+	17650 3400 18550 3400
+Wire Wire Line
+	17650 4000 17650 4450
+Wire Wire Line
+	17650 4450 18550 4450
+Wire Wire Line
+	17600 4100 17600 5500
+Wire Wire Line
+	17600 5500 18550 5500
+Wire Wire Line
+	17550 4200 17550 6600
+Wire Wire Line
+	17550 6600 18550 6600
+$Comp
+L RF_Module:RXB6-REV08 U?
+U 1 1 5DFF669D
+P 17150 2750
+F 0 "U?" H 17278 2496 50  0000 L CNN
+F 1 "RXB6-REV08" H 17278 2405 50  0000 L CNN
+F 2 "" H 17150 2750 50  0001 C CNN
+F 3 "" H 17150 2750 50  0001 C CNN
+	1    17150 2750
+	1    0    0    -1  
+$EndComp
+Connection ~ 18000 6300
+Wire Wire Line
+	18000 6300 18000 6900
+$Comp
+L power:GNDD #PWR?
+U 1 1 5DF7296F
+P 18000 6900
+F 0 "#PWR?" H 18000 6650 50  0001 C CNN
+F 1 "GNDD" H 18004 6745 50  0000 C CNN
+F 2 "" H 18000 6900 50  0001 C CNN
+F 3 "" H 18000 6900 50  0001 C CNN
+	1    18000 6900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 5E0015A4
+P 16750 3300
+F 0 "#PWR?" H 16750 3050 50  0001 C CNN
+F 1 "GNDD" H 16754 3145 50  0000 C CNN
+F 2 "" H 16750 3300 50  0001 C CNN
+F 3 "" H 16750 3300 50  0001 C CNN
+	1    16750 3300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	16500 3050 16850 3050
+Wire Wire Line
+	16750 3300 16750 3200
+Wire Wire Line
+	16750 3200 16850 3200
+Wire Wire Line
+	16850 2900 16750 2900
+$Comp
+L power:+5V #PWR?
+U 1 1 5E019974
+P 16750 2350
+F 0 "#PWR?" H 16750 2200 50  0001 C CNN
+F 1 "+5V" H 16765 2523 50  0000 C CNN
+F 2 "" H 16750 2350 50  0001 C CNN
+F 3 "" H 16750 2350 50  0001 C CNN
+	1    16750 2350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	16750 2350 16750 2900
+$Comp
+L Switch:SW_DIP_x01 SW?
+U 1 1 5E01E667
+P 16600 4550
+F 0 "SW?" H 16600 4817 50  0000 C CNN
+F 1 "SW_DIP_x01" H 16600 4726 50  0000 C CNN
+F 2 "" H 16600 4550 50  0001 C CNN
+F 3 "~" H 16600 4550 50  0001 C CNN
+	1    16600 4550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_DIP_x01 SW?
+U 1 1 5E0250DC
+P 16600 4950
+F 0 "SW?" H 16600 5217 50  0000 C CNN
+F 1 "SW_DIP_x01" H 16600 5126 50  0000 C CNN
+F 2 "" H 16600 4950 50  0001 C CNN
+F 3 "~" H 16600 4950 50  0001 C CNN
+	1    16600 4950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_DIP_x01 SW?
+U 1 1 5E025DA6
+P 16600 5600
+F 0 "SW?" H 16600 5867 50  0000 C CNN
+F 1 "SW_DIP_x01" H 16600 5776 50  0000 C CNN
+F 2 "" H 16600 5600 50  0001 C CNN
+F 3 "~" H 16600 5600 50  0001 C CNN
+	1    16600 5600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_DIP_x01 SW?
+U 1 1 5E02710C
+P 16600 6000
+F 0 "SW?" H 16600 6267 50  0000 C CNN
+F 1 "SW_DIP_x01" H 16600 6176 50  0000 C CNN
+F 2 "" H 16600 6000 50  0001 C CNN
+F 3 "~" H 16600 6000 50  0001 C CNN
+	1    16600 6000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	15650 3900 17650 3900
+Wire Wire Line
+	15650 4000 17650 4000
+Wire Wire Line
+	15650 4100 17600 4100
+Wire Wire Line
+	15650 4200 17550 4200
+Wire Wire Line
+	15650 3700 16500 3700
+Wire Wire Line
+	16500 3050 16500 3700
+Wire Wire Line
+	15650 4300 16300 4300
+Wire Wire Line
+	16300 4300 16300 4550
+Wire Wire Line
+	15650 4400 16250 4400
+Wire Wire Line
+	16250 4400 16250 4950
+Wire Wire Line
+	16250 4950 16300 4950
+Wire Wire Line
+	15650 4500 16200 4500
+Wire Wire Line
+	16200 4500 16200 5600
+Wire Wire Line
+	16200 5600 16300 5600
+Wire Wire Line
+	15650 4600 16150 4600
+Wire Wire Line
+	16150 4600 16150 6000
+Wire Wire Line
+	16150 6000 16300 6000
+Wire Wire Line
+	16900 4550 17050 4550
+Wire Wire Line
+	17050 4550 17050 4950
+Wire Wire Line
+	16900 4950 17050 4950
+Connection ~ 17050 4950
+Wire Wire Line
+	17050 4950 17050 5600
+Wire Wire Line
+	16900 5600 17050 5600
+Connection ~ 17050 5600
+Wire Wire Line
+	17050 5600 17050 6000
+Wire Wire Line
+	16900 6000 17050 6000
+Connection ~ 17050 6000
+Wire Wire Line
+	17050 6000 17050 6900
+$Comp
+L power:GNDD #PWR?
+U 1 1 5E06EBC2
+P 17050 6900
+F 0 "#PWR?" H 17050 6650 50  0001 C CNN
+F 1 "GNDD" H 17054 6745 50  0000 C CNN
+F 2 "" H 17050 6900 50  0001 C CNN
+F 3 "" H 17050 6900 50  0001 C CNN
+	1    17050 6900
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC
