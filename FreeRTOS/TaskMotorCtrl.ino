@@ -173,6 +173,20 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
     }
     else if (element.TaskType == TASKANALOG) {
       
+      switch (element.value) {
+              case OWERLOAD:          // owercurrent due to obstacle
+                         
+                    digitalWrite(MOTOR1PIN1, HIGH);
+                    digitalWrite(MOTOR1PIN2, HIGH);
+                    digitalWrite(MOTOR2PIN1, HIGH);
+                    digitalWrite(MOTOR2PIN2, HIGH);
+                    currentState = STOPED;
+              break;
+                
+              case NORMAL:          // 
+              break;
+      }
+      
     };
     
     vTaskDelay(1);  // one tick delay (15ms) in between reads for stability

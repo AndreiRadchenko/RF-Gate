@@ -1,6 +1,7 @@
 #include <Arduino_FreeRTOS.h>
 #include <semphr.h>  // add the FreeRTOS functions for Semaphores (or Flags).
 #include <RCSwitch.h>
+#include "ACS712.h"
 
 // Include queue support
 #include <queue.h>
@@ -15,6 +16,10 @@ QueueHandle_t integerQueue;
 // It will be used to ensure only only one Task is accessing this resource at any time.
 SemaphoreHandle_t xSerialSemaphore;
 RCSwitch mySwitch = RCSwitch();
+
+// We have 30 amps version sensor connected to A0 pin of arduino
+// Replace with your version if necessary
+ACS712 sensor(ACS712_30A, A0);
 
 // define four Tasks for DigitalRead & AnalogRead
 void TaskDigitalRead( void *pvParameters );
@@ -71,6 +76,13 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB, on LEONARDO, MICRO, YUN, and other 32u4 based boards.
   }
 
+  // calibrate() method calibrates zero point of sensor,
+  // It is not necessary, but may positively affect the accuracy
+  // Ensure that no current flows through the sensor at this moment
+  // If you are not sure that the current through the sensor will not leak during calibration - comment out this method
+  sensor.calibrate();
+  
+  
   // Semaphores are useful to stop a Task proceeding, where it should be paused to wait,
   // because it is sharing a resource, such as the Serial port.
   // Semaphores should only be used whilst the scheduler is running, but we can set it up here.
