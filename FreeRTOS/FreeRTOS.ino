@@ -19,10 +19,10 @@ RCSwitch mySwitch = RCSwitch();
 
 // We have 30 amps version sensor connected to A0 pin of arduino
 // Replace with your version if necessary
-ACS712 sensor(ACS712_30A, A0);
+ACS712 currentSensor1(ACS712_30A, A0);
+ACS712 currentSensor2(ACS712_30A, A1);
 
 // define four Tasks for DigitalRead & AnalogRead
-void TaskDigitalRead( void *pvParameters );
 void TaskAnalogRead( void *pvParameters );
 void TaskRfRead( void *pvParameters );
 void TaskMotorCtrl( void *pvParameters );
@@ -80,7 +80,10 @@ void setup() {
   // It is not necessary, but may positively affect the accuracy
   // Ensure that no current flows through the sensor at this moment
   // If you are not sure that the current through the sensor will not leak during calibration - comment out this method
-  sensor.calibrate();
+  currentSensor1.calibrate();
+  delay(10);
+  currentSensor2.calibrate();
+  delay(10);
   
   
   // Semaphores are useful to stop a Task proceeding, where it should be paused to wait,
@@ -101,15 +104,6 @@ void setup() {
                               sizeof(struct sensor) // Queue item size
                               );
   if (structQueue != NULL) { // Create task that consumes the queue if it was created.
-    
-  // Now set up two Tasks to run independently.
-  xTaskCreate(
-    TaskDigitalRead
-    ,  (const portCHAR *) "DigitalRead"  // A name just for humans
-    ,  128  // This stack size can be checked & adjusted by reading the Stack Highwater
-    ,  NULL
-    ,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-    ,  NULL );
 
   xTaskCreate(
     TaskAnalogRead

@@ -3,18 +3,19 @@ const char OPENED = 'e';
 const char CLOSING = 'f';
 const char CLOSED = 'g';
 const char STOPED = 'j';
+const char STOPED1 = 'k';
+const char STOPED2 = 'l';
+const char MOVING = 'l';
 const int LEAFDELAY = 3000; //ms delay beetvin leaf opening
-char prevGateState = 'J';
 
 void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a Task.
 {
   struct sensor element;
+  
   char currentState = STOPED;
-  bool motor_1_ForwardEnable;
-  bool motor_1_ReversEnable;
-  bool motor_2_ForwardEnable;
-  bool motor_2_ReversEnable;
-
+  char Leaf1State = MOVING;
+  char Leaf2State = MOVING;
+  
   for (;;)
   {
     xQueueReceive(structQueue, &element, portMAX_DELAY);
@@ -31,9 +32,6 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
       Serial.print("currentState: ");
       Serial.println(currentState);
  
-      Serial.print("GPIO: ");
-      Serial.println(prevGateState);
- 
       Serial.println("----------------");
       
     xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
@@ -47,6 +45,8 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         digitalWrite(MOTOR2PIN1, LOW);
         digitalWrite(MOTOR2PIN2, HIGH);
         currentState = OPENING;
+        Leaf1State = MOVING;
+        Leaf2State = MOVING;
       }
       else if (element.value == START && currentState == OPENING) {
         digitalWrite(MOTOR1PIN1, HIGH);
@@ -61,6 +61,8 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         digitalWrite(MOTOR2PIN1, LOW);
         digitalWrite(MOTOR2PIN2, HIGH);
         currentState = OPENING;
+        Leaf1State = MOVING;
+        Leaf2State = MOVING;
       }
       else if (element.value == START && currentState == OPENED) {
         
@@ -81,6 +83,8 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         digitalWrite(MOTOR1PIN1, HIGH);
         digitalWrite(MOTOR1PIN2, LOW);
         currentState = CLOSING;
+        Leaf1State = MOVING;
+        Leaf2State = MOVING;
       }
       else if (element.value == REVERS && currentState == OPENING) {
         digitalWrite(MOTOR1PIN1, HIGH);
@@ -96,6 +100,8 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         digitalWrite(MOTOR1PIN1, HIGH);
         digitalWrite(MOTOR1PIN2, LOW);
         currentState = CLOSING;
+        Leaf1State = MOVING;
+        Leaf2State = MOVING;
       }
       else if (element.value == REVERS && currentState == CLOSING) {
         digitalWrite(MOTOR1PIN1, HIGH);
@@ -105,82 +111,50 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         currentState = STOPED;
       };             
     }
-    else if (element.TaskType == TASKDIGITAL) {
-      
-/*          if ( xSemaphoreTake( xSerialSemaphore, ( TickType_t ) 5 ) == pdTRUE )
-            {
-              Serial.println("TaskMotorCtrl");
-              Serial.print("TaskType: ");
-              Serial.println(element.TaskType);
-         
-              Serial.print("Value: ");
-              Serial.println(element.value);
-         
-              Serial.println("----------------");
-              
-            xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
-            };
-*/            
-          switch (element.value) {
-              case 'J':          // gate closed
-                    
-                if ( currentState == CLOSING) {            
-                    digitalWrite(MOTOR1PIN1, HIGH);
-                    digitalWrite(MOTOR1PIN2, HIGH);
-                    digitalWrite(MOTOR2PIN1, HIGH);
-                    digitalWrite(MOTOR2PIN2, HIGH);
-                    currentState = CLOSED;
-                };
-                break;
-                
-              case 'E':          // gate opened
-              
-                if ( currentState == OPENING) {            
-                    digitalWrite(MOTOR1PIN1, HIGH);
-                    digitalWrite(MOTOR1PIN2, HIGH);
-                    digitalWrite(MOTOR2PIN1, HIGH);
-                    digitalWrite(MOTOR2PIN2, HIGH);
-                    currentState = OPENED;
-                };
-                break;
-                
-              case 'N':          // first leaf opening, second closed
-              
-                if ( currentState == CLOSING) {
-                    digitalWrite(MOTOR2PIN1, HIGH);
-                    digitalWrite(MOTOR2PIN2, HIGH);
-                };
-                break;
-                
-              case 'O':          // gate opening
-                // statements
-                break;
-                
-              case 'G':          // first leaf opened, second opening 
-              
-                if ( currentState == OPENING) {            
-                    digitalWrite(MOTOR1PIN1, HIGH);
-                    digitalWrite(MOTOR1PIN2, HIGH);
-                };
-                break;
-                        
-              default:
-                // statements
-                break;
-            };
-            
-          prevGateState = element.value;    
-    }
     else if (element.TaskType == TASKANALOG) {
       
       switch (element.value) {
-              case OWERLOAD:          // owercurrent due to obstacle
+              case OWERLOAD12:          // owercurrent due to obstacle
                          
                     digitalWrite(MOTOR1PIN1, HIGH);
                     digitalWrite(MOTOR1PIN2, HIGH);
                     digitalWrite(MOTOR2PIN1, HIGH);
                     digitalWrite(MOTOR2PIN2, HIGH);
-                    currentState = STOPED;
+                    Leaf1State = STOPED;
+                    Leaf2State = STOPED;
+                    if ( currentState == OPENING ) {
+                      currentState = OPENED;
+                    }
+                    else if ( currentState == CLOSING ) {
+                      currentState = CLOSED;
+                    };
+              break;
+              
+              case OWERLOAD1:          // owercurrent due to obstacle
+                         
+                    digitalWrite(MOTOR1PIN1, HIGH);
+                    digitalWrite(MOTOR1PIN2, HIGH);
+                    Leaf1State = STOPED;
+                    if ( currentState == OPENING && Leaf2State == STOPED ) {
+                      currentState = OPENED;
+                    }
+                    else if ( currentState == CLOSING && Leaf2State == STOPED ) {
+                      currentState = CLOSED;
+                    };
+                    
+              break;
+              
+              case OWERLOAD2:          // owercurrent due to obstacle
+                         
+                    digitalWrite(MOTOR2PIN1, HIGH);
+                    digitalWrite(MOTOR2PIN2, HIGH);
+                    Leaf2State = STOPED;
+                    if ( currentState == OPENING && Leaf1State == STOPED) {
+                      currentState = OPENED;
+                    }
+                    else if ( currentState == CLOSING && Leaf1State == STOPED ) {
+                      currentState = CLOSED;
+                    };
               break;
                 
               case NORMAL:          // 
