@@ -12,15 +12,15 @@ void TaskAnalogRead( void *pvParameters __attribute__((unused)) )  // This is a 
   for (;;)
   {
     // read the input on analog pin 0:
-    //int sensor1Value = analogRead(A0);
-    //delay(1);
-    //int sensor2Value = analogRead(A1);
+    int sensor1Value = analogRead(A0);
+    delay(1);
+    int sensor2Value = analogRead(A1);
     
     // Read current from sensor
     float current1 = currentSensor1.getCurrentDC();
     delay(5);
     float current2 = currentSensor2.getCurrentDC();
-    delay(5);
+    //delay(50);
     if (current1 > owerloadCurr && current2 > owerloadCurr) { value = OWERLOAD12; }
        else if (current1 > owerloadCurr) { value = OWERLOAD1; }
        else if (current2 > owerloadCurr) { value = OWERLOAD2; }
@@ -34,6 +34,10 @@ void TaskAnalogRead( void *pvParameters __attribute__((unused)) )  // This is a 
       // We want to have the Serial Port for us alone, as it takes some time to print,
       // so we don't want it getting stolen during the middle of a conversion.
       // print out the value you read:
+      Serial.print("Value1 = ");
+      Serial.print(sensor1Value);
+      Serial.print("; Value2 = ");
+      Serial.println(sensor2Value);
       Serial.print("Current1 = ");
       Serial.print(current1);
       Serial.print("; Current2 = ");
