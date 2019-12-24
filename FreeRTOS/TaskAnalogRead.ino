@@ -2,7 +2,8 @@ const char OWERLOAD1 = 'O';
 const char OWERLOAD2 = 'P';
 const char OWERLOAD12 = 'R';
 const char NORMAL = 'N';
-float owerloadCurr = 3;
+float owerloadCurr1 = 5;
+float owerloadCurr2 = 3;
 
 void TaskAnalogRead( void *pvParameters __attribute__((unused)) )  // This is a Task.
 {
@@ -21,9 +22,9 @@ void TaskAnalogRead( void *pvParameters __attribute__((unused)) )  // This is a 
     delay(5);
     float current2 = currentSensor2.getCurrentDC();
     //delay(50);
-    if (current1 > owerloadCurr && current2 > owerloadCurr) { value = OWERLOAD12; }
-       else if (current1 > owerloadCurr) { value = OWERLOAD1; }
-       else if (current2 > owerloadCurr) { value = OWERLOAD2; }
+    if (current1 > owerloadCurr1 && current2 > owerloadCurr2) { value = OWERLOAD12; }
+       else if (current1 > owerloadCurr1) { value = OWERLOAD1; }
+       else if (current2 > owerloadCurr2) { value = OWERLOAD2; }
        else { value = NORMAL; };
 
     // See if we can obtain or "Take" the Serial Semaphore.
