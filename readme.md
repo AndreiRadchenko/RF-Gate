@@ -13,10 +13,12 @@
 
 Комплектуючі:
 
-- Блок живлення 24В 10А : 
+- Блок живлення 24В 10А :
+
         https://prom.ua/p973067005-blok-pitaniya-24v.html
         https://ledtechnics.dp.ua/p469385723-blok-pitaniya-24v.html
 - Коробка вологозахищена 
+
         https://prom.ua/p998541743-korobka-raspayachnaya-km41272.html
         controller.in.ua : https://prom.ua/p595636346-korobka-km41272-raspayachnaya.html
 - Arduino UNO:
