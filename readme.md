@@ -1,4 +1,4 @@
-задачі для воротної автоматики:
+#**Задачі для воротної автоматики:**
 
 1. опитування rf-приймача
 
@@ -10,17 +10,17 @@
 3. керування моторами left leaf: D4;D5, right leaf: D6;D7. (пуск: (1,0), стоп: (0,0), реверс: (0,1)) 
         - приймає команди від радіопульта
         - приймає команди від датчиків струму
+        
+![Прототип блока керування ](photo1.jpg)        
 
-Комплектуючі:
+#**Комплектуючі:**
 
-- Блок живлення 24В 10А :
-
-        https://prom.ua/p973067005-blok-pitaniya-24v.html
-        https://ledtechnics.dp.ua/p469385723-blok-pitaniya-24v.html
-- Коробка вологозахищена 
-
-        https://prom.ua/p998541743-korobka-raspayachnaya-km41272.html
-        controller.in.ua : https://prom.ua/p595636346-korobka-km41272-raspayachnaya.html
+##Блок живлення 24В 10А :
+        *https://prom.ua/p973067005-blok-pitaniya-24v.html
+        *https://ledtechnics.dp.ua/p469385723-blok-pitaniya-24v.html
+##Коробка вологозахищена 
+        *https://prom.ua/p998541743-korobka-raspayachnaya-km41272.html
+        *https://prom.ua/p595636346-korobka-km41272-raspayachnaya.html
 - Arduino UNO:
         http://arduino.ua/prod2610-arduino-uno-r3-ch340
         https://controller.in.ua/arduino-uno-r3-red-2018
