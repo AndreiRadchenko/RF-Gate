@@ -1,20 +1,18 @@
-Git Help:
-
-        git --help
+### Arduino Help:
 - Start arduino from folder arduino-1.8.10:
 
         andrei@E330 ~/arduino-1.8.10 $ ./arduino
+        
 - Enable acces to ttyUSB0:
 
         sudo chmod ugo+rw /dev/ttyUSB0
-Git:
-
+        
+### Git help:
 - Create remote repository:
-
 - View pc ssh key for copy to github:
 
         cat ~/.ssh/id_rsa.pub
-
+        
 - Add remote repository:
 
         git remote add origin git@github.com:AndreiRadchenko/RF-Gate.git
