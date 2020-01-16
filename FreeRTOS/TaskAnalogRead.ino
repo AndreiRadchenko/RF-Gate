@@ -2,20 +2,23 @@ const char OWERLOAD1 = 'O';
 const char OWERLOAD2 = 'P';
 const char OWERLOAD12 = 'R';
 const char NORMAL = 'N';
-float owerloadCurr1 = 5;
-float owerloadCurr2 = 3;
+const float NORMALCURR1 = 4;
+const float NORMALCURR2 = 3.5;
+//const float STARTCURR = 10;
 
 void TaskAnalogRead( void *pvParameters __attribute__((unused)) )  // This is a Task.
 {
    struct sensor mySensor;
    char value;
-
+   float owerloadCurr1 = NORMALCURR1;
+   float owerloadCurr2 = NORMALCURR2;
+   
   for (;;)
   {
     // read the input on analog pin 0:
-    int sensor1Value = analogRead(A0);
-    delay(1);
-    int sensor2Value = analogRead(A1);
+    //int sensor1Value = analogRead(A0);
+    //delay(1);
+    //int sensor2Value = analogRead(A1);
     
     // Read current from sensor
     float current1 = currentSensor1.getCurrentDC();
@@ -35,20 +38,24 @@ void TaskAnalogRead( void *pvParameters __attribute__((unused)) )  // This is a 
       // We want to have the Serial Port for us alone, as it takes some time to print,
       // so we don't want it getting stolen during the middle of a conversion.
       // print out the value you read:
-      Serial.print("Value1 = ");
-      Serial.print(sensor1Value);
-      Serial.print("; Value2 = ");
-      Serial.println(sensor2Value);
+      Serial.print("owerloadCurr1 = ");
+      Serial.print(owerloadCurr1);
+      Serial.print("; owerloadCurr2 = ");
+      Serial.println(owerloadCurr2);
       Serial.print("Current1 = ");
       Serial.print(current1);
       Serial.print("; Current2 = ");
       Serial.println(current2);
       xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
     }
-
-    mySensor.TaskType = TASKANALOG;
-    mySensor.value =  value;  
-    xQueueSend(structQueue, &mySensor, portMAX_DELAY);
-    vTaskDelay(100);  // Wait a second before the new measurement
+    
+    if (value != NORMAL) {
+      
+      mySensor.TaskType = TASKANALOG;
+      mySensor.value =  value;  
+      xQueueSend(structQueue, &mySensor, portMAX_DELAY);
+    };
+    
+    vTaskDelay(333/portTICK_PERIOD_MS);  // Wait a 0.1 second before the new measurement
   }
 }

@@ -5,12 +5,18 @@ const char CLOSED = 'g';
 const char STOPED = 'j';
 const char STOPED1 = 'k';
 const char STOPED2 = 'l';
-const char MOVING = 'l';
+const char MOVING = 'm';
+const char STARTMOTOR1 = 'n';
+const char STARTMOTOR2 = 'o';
 const int LEAFDELAY = 3000; //ms delay beetvin leaf opening
+const int MOTORSTARTDELAY = 2000; //ms delay beetvin leaf opening
 
 void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a Task.
 {
   struct sensor element;
+  //struct sensor mySensor;
+  //char value;  
+  //mySensor.TaskType = TASKMOTORCTRL;
   
   char currentState = STOPED;
   char Leaf1State = MOVING;
@@ -28,8 +34,8 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
       // We want to have the Serial Port for us alone, as it takes some time to print,
       // so we don't want it getting stolen during the middle of a conversion.
       // print out the value you read:
-      Serial.println("TaskMotorCtrl");
-      Serial.print("currentState: ");
+      Serial.print("TaskMotorCtrl currentState: ");
+      //Serial.print("currentState: ");
       Serial.println(currentState);
  
       Serial.println("----------------");
@@ -39,14 +45,18 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
     
     if (element.TaskType == TASKRF) {
       if (element.value == START && currentState == CLOSED){
+        
         digitalWrite(MOTOR1PIN1, LOW);
         digitalWrite(MOTOR1PIN2, HIGH);
-        vTaskDelay(LEAFDELAY / portTICK_PERIOD_MS);
-        digitalWrite(MOTOR2PIN1, LOW);
-        digitalWrite(MOTOR2PIN2, HIGH);
-        currentState = OPENING;
         Leaf1State = MOVING;
+        currentState = OPENING;
+        vTaskDelay(LEAFDELAY / portTICK_PERIOD_MS);
+        xQueueReset(structQueue);
+        digitalWrite(MOTOR2PIN1, LOW);
+        digitalWrite(MOTOR2PIN2, HIGH);             
         Leaf2State = MOVING;
+        vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
+        xQueueReset(structQueue);
       }
       else if (element.value == START && currentState == OPENING) {
         digitalWrite(MOTOR1PIN1, HIGH);
@@ -63,6 +73,8 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         currentState = OPENING;
         Leaf1State = MOVING;
         Leaf2State = MOVING;
+        //vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
+        xQueueReset(structQueue);
       }
       else if (element.value == START && currentState == OPENED) {
         
@@ -85,6 +97,8 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         currentState = CLOSING;
         Leaf1State = MOVING;
         Leaf2State = MOVING;
+        //vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
+        xQueueReset(structQueue);
       }
       else if (element.value == REVERS && currentState == OPENING) {
         digitalWrite(MOTOR1PIN1, HIGH);
@@ -96,12 +110,15 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
       else if (element.value == REVERS && currentState == OPENED) {
         digitalWrite(MOTOR2PIN1, HIGH);
         digitalWrite(MOTOR2PIN2, LOW);
-        vTaskDelay(LEAFDELAY / portTICK_PERIOD_MS);
-        digitalWrite(MOTOR1PIN1, HIGH);
-        digitalWrite(MOTOR1PIN2, LOW);
         currentState = CLOSING;
+        vTaskDelay(LEAFDELAY / portTICK_PERIOD_MS);
+        xQueueReset(structQueue);
+        digitalWrite(MOTOR1PIN1, HIGH);
+        digitalWrite(MOTOR1PIN2, LOW);        
         Leaf1State = MOVING;
         Leaf2State = MOVING;
+        vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
+        xQueueReset(structQueue);
       }
       else if (element.value == REVERS && currentState == CLOSING) {
         digitalWrite(MOTOR1PIN1, HIGH);

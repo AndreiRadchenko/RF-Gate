@@ -45,6 +45,8 @@ void TaskRfRead( void *pvParameters __attribute__((unused)) )  // This is a Task
         Serial.print("Protocol: ");
         Serial.println( mySwitch.getReceivedProtocol() );
       };
+      xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
+    };  
           
     if (value == OPENCOD1 || value == OPENCOD2) {
           mySensor.TaskType = TASKRF;
@@ -60,9 +62,9 @@ void TaskRfRead( void *pvParameters __attribute__((unused)) )  // This is a Task
         };
         
     //vTaskDelay(1000 / portTICK_PERIOD_MS);  // one tick delay (15ms) in between reads for stability
-    };
+    //};
     
-    xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
+    //xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
     }
     //vTaskDelay(1000 / portTICK_PERIOD_MS);  // one tick delay (15ms) in between reads for stability
       mySwitch.resetAvailable();

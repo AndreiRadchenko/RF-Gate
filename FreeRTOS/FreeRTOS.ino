@@ -47,6 +47,7 @@ QueueHandle_t structQueue;
 const char TASKRF = '1';
 const char TASKDIGITAL = '2';
 const char TASKANALOG = '3';
+const char TASKMOTORCTRL = '4';
 const char START = 'a'; //00001010
 const char STOP = 'b';
 const char REVERS = 'c'; //00000101

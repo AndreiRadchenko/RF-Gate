@@ -49,6 +49,11 @@
 
         git push -u origin current_sensors
 
+- Pull from remote repository:
+
+        git pull
+        git merge <branch>
+
 - Show all branches:
 
         git branch -a
