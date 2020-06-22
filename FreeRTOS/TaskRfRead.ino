@@ -1,9 +1,18 @@
 //Andrii Balbat keychain codes:
+/* 
 const int OPENCOD1 = 13201570;
 const int CLOSECOD1 = 13201576;
 
 const int OPENCOD2 = 13452930;
 const int CLOSECOD2 = 13452936;
+*/
+
+//Andrii Radchenko keychain codes:
+const int OPENCOD1 = 13618402;
+const int CLOSECOD1 = 13618408;
+
+const int OPENCOD2 = 3021444; //RF-Bridge RFKey15
+const int CLOSECOD2 = 3021448; //RF-Bridge RFKey16
 
 void TaskRfRead( void *pvParameters __attribute__((unused)) )  // This is a Task.
 {

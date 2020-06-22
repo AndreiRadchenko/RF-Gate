@@ -2,8 +2,10 @@ const char OWERLOAD1 = 'O';
 const char OWERLOAD2 = 'P';
 const char OWERLOAD12 = 'R';
 const char NORMAL = 'N';
-const float NORMALCURR1 = 4;
-const float NORMALCURR2 = 3.5;
+//const float NORMALCURR1 = 5.5;
+//const float NORMALCURR2 = 4.5;
+const float NORMALCURR1 = 4.5;
+const float NORMALCURR2 = 4.5;
 //const float STARTCURR = 10;
 
 void TaskAnalogRead( void *pvParameters __attribute__((unused)) )  // This is a Task.
@@ -16,9 +18,9 @@ void TaskAnalogRead( void *pvParameters __attribute__((unused)) )  // This is a 
   for (;;)
   {
     // read the input on analog pin 0:
-    //int sensor1Value = analogRead(A0);
+    int sensor1Value = analogRead(A0);
     //delay(1);
-    //int sensor2Value = analogRead(A1);
+    int sensor2Value = analogRead(A1);
     
     // Read current from sensor
     float current1 = currentSensor1.getCurrentDC();
@@ -40,6 +42,8 @@ void TaskAnalogRead( void *pvParameters __attribute__((unused)) )  // This is a 
       // print out the value you read:
       Serial.print("owerloadCurr1 = ");
       Serial.print(owerloadCurr1);
+      Serial.print("; sensor1Value = ");
+      Serial.print(sensor1Value);
       Serial.print("; owerloadCurr2 = ");
       Serial.println(owerloadCurr2);
       Serial.print("Current1 = ");
@@ -56,6 +60,6 @@ void TaskAnalogRead( void *pvParameters __attribute__((unused)) )  // This is a 
       xQueueSend(structQueue, &mySensor, portMAX_DELAY);
     };
     
-    vTaskDelay(333/portTICK_PERIOD_MS);  // Wait a 0.1 second before the new measurement
+    vTaskDelay(500/portTICK_PERIOD_MS);  // Wait a 0.5 second before the new measurement
   }
 }

@@ -9,6 +9,7 @@ const char MOVING = 'm';
 const char STARTMOTOR1 = 'n';
 const char STARTMOTOR2 = 'o';
 const int LEAFDELAY = 3000; //ms delay beetvin leaf opening
+const int LEAFDELAY1 = 5000; //ms delay beetvin leaf opening
 const int MOTORSTARTDELAY = 2000; //ms delay beetvin leaf opening
 
 void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a Task.
@@ -21,6 +22,7 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
   char currentState = STOPED;
   char Leaf1State = MOVING;
   char Leaf2State = MOVING;
+  int led = LOW;
   
   for (;;)
   {
@@ -42,12 +44,24 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
       
     xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
     };
+
+     // if (digitalRead(LED_BUILTIN) == LOW)
+     //     digitalWrite(LED_BUILTIN, HIGH);
+     // else 
+     //     digitalWrite(LED_BUILTIN, LOW);  
     
     if (element.TaskType == TASKRF) {
+
+      if (digitalRead(LED_BUILTIN) == LOW)
+          digitalWrite(LED_BUILTIN, HIGH);
+      else 
+          digitalWrite(LED_BUILTIN, LOW);    
+      
       if (element.value == START && currentState == CLOSED){
         
         digitalWrite(MOTOR1PIN1, LOW);
         digitalWrite(MOTOR1PIN2, HIGH);
+        digitalWrite(LAMPPIN, LOW);
         Leaf1State = MOVING;
         currentState = OPENING;
         vTaskDelay(LEAFDELAY / portTICK_PERIOD_MS);
@@ -63,6 +77,7 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         digitalWrite(MOTOR1PIN2, HIGH);
         digitalWrite(MOTOR2PIN1, HIGH);
         digitalWrite(MOTOR2PIN2, HIGH);
+        digitalWrite(LAMPPIN, HIGH);
         currentState = STOPED;
       }
       else if (element.value == START && currentState == STOPED) {
@@ -70,10 +85,11 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         digitalWrite(MOTOR1PIN2, HIGH);
         digitalWrite(MOTOR2PIN1, LOW);
         digitalWrite(MOTOR2PIN2, HIGH);
+        digitalWrite(LAMPPIN, LOW);
         currentState = OPENING;
         Leaf1State = MOVING;
         Leaf2State = MOVING;
-        //vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
+        vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
         xQueueReset(structQueue);
       }
       else if (element.value == START && currentState == OPENED) {
@@ -84,6 +100,7 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         digitalWrite(MOTOR1PIN2, HIGH);
         digitalWrite(MOTOR2PIN1, HIGH);
         digitalWrite(MOTOR2PIN2, HIGH);
+        digitalWrite(LAMPPIN, HIGH);
         currentState = STOPED;
       }
       else if (element.value == REVERS && currentState == CLOSED){
@@ -94,10 +111,11 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         digitalWrite(MOTOR2PIN2, LOW);
         digitalWrite(MOTOR1PIN1, HIGH);
         digitalWrite(MOTOR1PIN2, LOW);
+        digitalWrite(LAMPPIN, LOW);
         currentState = CLOSING;
         Leaf1State = MOVING;
         Leaf2State = MOVING;
-        //vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
+        vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
         xQueueReset(structQueue);
       }
       else if (element.value == REVERS && currentState == OPENING) {
@@ -105,13 +123,15 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         digitalWrite(MOTOR1PIN2, HIGH);
         digitalWrite(MOTOR2PIN1, HIGH);
         digitalWrite(MOTOR2PIN2, HIGH);
+        digitalWrite(LAMPPIN, HIGH);
         currentState = STOPED;
       }
       else if (element.value == REVERS && currentState == OPENED) {
         digitalWrite(MOTOR2PIN1, HIGH);
         digitalWrite(MOTOR2PIN2, LOW);
+        digitalWrite(LAMPPIN, LOW);
         currentState = CLOSING;
-        vTaskDelay(LEAFDELAY / portTICK_PERIOD_MS);
+        vTaskDelay(LEAFDELAY1 / portTICK_PERIOD_MS);
         xQueueReset(structQueue);
         digitalWrite(MOTOR1PIN1, HIGH);
         digitalWrite(MOTOR1PIN2, LOW);        
@@ -125,6 +145,7 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         digitalWrite(MOTOR1PIN2, HIGH);
         digitalWrite(MOTOR2PIN1, HIGH);
         digitalWrite(MOTOR2PIN2, HIGH);
+        digitalWrite(LAMPPIN, HIGH);
         currentState = STOPED;
       };             
     }
@@ -137,6 +158,7 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
                     digitalWrite(MOTOR1PIN2, HIGH);
                     digitalWrite(MOTOR2PIN1, HIGH);
                     digitalWrite(MOTOR2PIN2, HIGH);
+                    digitalWrite(LAMPPIN, HIGH);
                     Leaf1State = STOPED;
                     Leaf2State = STOPED;
                     if ( currentState == OPENING ) {
@@ -154,9 +176,11 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
                     Leaf1State = STOPED;
                     if ( currentState == OPENING && Leaf2State == STOPED ) {
                       currentState = OPENED;
+                      digitalWrite(LAMPPIN, HIGH);
                     }
                     else if ( currentState == CLOSING && Leaf2State == STOPED ) {
                       currentState = CLOSED;
+                      digitalWrite(LAMPPIN, HIGH);
                     };
                     
               break;
@@ -168,9 +192,11 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
                     Leaf2State = STOPED;
                     if ( currentState == OPENING && Leaf1State == STOPED) {
                       currentState = OPENED;
+                      digitalWrite(LAMPPIN, HIGH);
                     }
                     else if ( currentState == CLOSING && Leaf1State == STOPED ) {
                       currentState = CLOSED;
+                      digitalWrite(LAMPPIN, HIGH);
                     };
               break;
                 

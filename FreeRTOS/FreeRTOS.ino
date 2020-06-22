@@ -39,10 +39,8 @@ QueueHandle_t structQueue;
 #define MOTOR2PIN1 6
 #define MOTOR2PIN2 7
 
-#define SW_OPENED1 8
-#define SW_CLOSED1 9
-#define SW_OPENED2 10
-#define SW_CLOSED2 11
+#define LAMPPIN 8
+
 
 const char TASKRF = '1';
 const char TASKDIGITAL = '2';
@@ -55,20 +53,17 @@ const char REVERS = 'c'; //00000101
 // the setup function runs once when you press reset or power the board
 void setup() {
 
+  pinMode(LED_BUILTIN, OUTPUT);
   pinMode(MOTOR1PIN1, OUTPUT); //control pin1 motor1
   pinMode(MOTOR1PIN2, OUTPUT); //control pin2 motor1
   pinMode(MOTOR2PIN1, OUTPUT); //control pin1 motor2
   pinMode(MOTOR2PIN2, OUTPUT); //control pin2 motor2
+  pinMode(LAMPPIN, OUTPUT); //control signal lamp
   digitalWrite(MOTOR1PIN1, HIGH);
   digitalWrite(MOTOR1PIN2, HIGH);
   digitalWrite(MOTOR2PIN1, HIGH);
   digitalWrite(MOTOR2PIN2, HIGH);
-
-  // make the pushbutton's pin an input:
-  pinMode(SW_OPENED1, INPUT_PULLUP);
-  pinMode(SW_CLOSED1, INPUT_PULLUP);
-  pinMode(SW_OPENED2, INPUT_PULLUP);
-  pinMode(SW_CLOSED2, INPUT_PULLUP);
+  digitalWrite(LAMPPIN, HIGH);
   
   // initialize serial communication at 9600 bits per second:
   Serial.begin(115200);
