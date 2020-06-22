@@ -1,8 +1,26 @@
-const int OPENCOD1 = 13201570;
-const int CLOSECOD1 = 13201576;
+//Andrii Balbat keychain codes:
+ 
+//const int OPENCOD1 = 13201570;
+//const int CLOSECOD1 = 13201576;
 
-const int OPENCOD2 = 13201570;
-const int CLOSECOD2 = 13201576;
+//const int OPENCOD2 = 13452930;
+//const int CLOSECOD2 = 13452936;
+
+
+//Andrii Radchenko keychain codes:
+//const int OPENCOD1 = 13618402;
+//const int CLOSECOD1 = 13618408;
+
+const int OPENCOD1 = 4178728;
+const int CLOSECOD1 = 4178724;
+
+const int OPENCOD2 = 8902696;
+const int CLOSECOD2 = 8902692;
+
+//const int KEYC1 = 4178722
+//const int KEYC2 = 8902690;;
+//const int OPENCOD2 = 3021444; //RF-Bridge RFKey15
+//const int CLOSECOD2 = 3021448; //RF-Bridge RFKey16
 
 void TaskRfRead( void *pvParameters __attribute__((unused)) )  // This is a Task.
 {
@@ -44,6 +62,8 @@ void TaskRfRead( void *pvParameters __attribute__((unused)) )  // This is a Task
         Serial.print("Protocol: ");
         Serial.println( mySwitch.getReceivedProtocol() );
       };
+      xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
+    };  
           
     if (value == OPENCOD1 || value == OPENCOD2) {
           mySensor.TaskType = TASKRF;
@@ -59,9 +79,9 @@ void TaskRfRead( void *pvParameters __attribute__((unused)) )  // This is a Task
         };
         
     //vTaskDelay(1000 / portTICK_PERIOD_MS);  // one tick delay (15ms) in between reads for stability
-    };
+    //};
     
-    xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
+    //xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
     }
     //vTaskDelay(1000 / portTICK_PERIOD_MS);  // one tick delay (15ms) in between reads for stability
       mySwitch.resetAvailable();

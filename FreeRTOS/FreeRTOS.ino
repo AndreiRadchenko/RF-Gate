@@ -19,10 +19,10 @@ RCSwitch mySwitch = RCSwitch();
 
 // We have 30 amps version sensor connected to A0 pin of arduino
 // Replace with your version if necessary
-ACS712 sensor(ACS712_30A, A0);
+ACS712 currentSensor1(ACS712_30A, A0);
+ACS712 currentSensor2(ACS712_30A, A1);
 
 // define four Tasks for DigitalRead & AnalogRead
-void TaskDigitalRead( void *pvParameters );
 void TaskAnalogRead( void *pvParameters );
 void TaskRfRead( void *pvParameters );
 void TaskMotorCtrl( void *pvParameters );
@@ -39,14 +39,13 @@ QueueHandle_t structQueue;
 #define MOTOR2PIN1 6
 #define MOTOR2PIN2 7
 
-#define SW_OPENED1 8
-#define SW_CLOSED1 9
-#define SW_OPENED2 10
-#define SW_CLOSED2 11
+#define LAMPPIN 8
+
 
 const char TASKRF = '1';
 const char TASKDIGITAL = '2';
 const char TASKANALOG = '3';
+const char TASKMOTORCTRL = '4';
 const char START = 'a'; //00001010
 const char STOP = 'b';
 const char REVERS = 'c'; //00000101
@@ -54,20 +53,17 @@ const char REVERS = 'c'; //00000101
 // the setup function runs once when you press reset or power the board
 void setup() {
 
+  pinMode(LED_BUILTIN, OUTPUT);
   pinMode(MOTOR1PIN1, OUTPUT); //control pin1 motor1
   pinMode(MOTOR1PIN2, OUTPUT); //control pin2 motor1
   pinMode(MOTOR2PIN1, OUTPUT); //control pin1 motor2
   pinMode(MOTOR2PIN2, OUTPUT); //control pin2 motor2
+  pinMode(LAMPPIN, OUTPUT); //control signal lamp
   digitalWrite(MOTOR1PIN1, HIGH);
   digitalWrite(MOTOR1PIN2, HIGH);
   digitalWrite(MOTOR2PIN1, HIGH);
   digitalWrite(MOTOR2PIN2, HIGH);
-
-  // make the pushbutton's pin an input:
-  pinMode(SW_OPENED1, INPUT_PULLUP);
-  pinMode(SW_CLOSED1, INPUT_PULLUP);
-  pinMode(SW_OPENED2, INPUT_PULLUP);
-  pinMode(SW_CLOSED2, INPUT_PULLUP);
+  digitalWrite(LAMPPIN, HIGH);
   
   // initialize serial communication at 9600 bits per second:
   Serial.begin(115200);
@@ -80,7 +76,10 @@ void setup() {
   // It is not necessary, but may positively affect the accuracy
   // Ensure that no current flows through the sensor at this moment
   // If you are not sure that the current through the sensor will not leak during calibration - comment out this method
-  sensor.calibrate();
+  currentSensor1.calibrate();
+  delay(10);
+  currentSensor2.calibrate();
+  delay(10);
   
   
   // Semaphores are useful to stop a Task proceeding, where it should be paused to wait,
@@ -101,15 +100,6 @@ void setup() {
                               sizeof(struct sensor) // Queue item size
                               );
   if (structQueue != NULL) { // Create task that consumes the queue if it was created.
-    
-  // Now set up two Tasks to run independently.
-  xTaskCreate(
-    TaskDigitalRead
-    ,  (const portCHAR *) "DigitalRead"  // A name just for humans
-    ,  128  // This stack size can be checked & adjusted by reading the Stack Highwater
-    ,  NULL
-    ,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-    ,  NULL );
 
   xTaskCreate(
     TaskAnalogRead
