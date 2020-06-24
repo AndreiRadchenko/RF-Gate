@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:uno-gate-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -327,4 +326,50 @@ Wire Wire Line
 Connection ~ 1750 2750
 Wire Wire Line
 	1750 2750 2150 2750
+$Comp
+L Relay:DIPxx-1Cxx-51x K&?
+U 1 1 5EF179F1
+P 6050 4200
+F 0 "K&?" V 5483 4200 50  0001 C CNN
+F 1 "Relay 5 (lamp)" V 5574 4200 50  0000 C CNN
+F 2 "Relay_THT:Relay_StandexMeder_DIP_LowProfile" H 6500 4150 50  0001 L CNN
+F 3 "https://standexelectronics.com/wp-content/uploads/datasheet_reed_relay_DIP.pdf" H 6050 4200 50  0001 C CNN
+	1    6050 4200
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	5050 3250 5400 3250
+$Comp
+L Device:Lamp LA?
+U 1 1 5EF374CD
+P 6600 3700
+F 0 "LA?" H 6728 3746 50  0000 L CNN
+F 1 "Lamp" H 6728 3655 50  0000 L CNN
+F 2 "" V 6600 3800 50  0001 C CNN
+F 3 "~" V 6600 3800 50  0001 C CNN
+	1    6600 3700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5750 4100 5800 4100
+Wire Wire Line
+	5400 4400 5750 4400
+Wire Wire Line
+	5400 3250 5400 4400
+Wire Wire Line
+	6350 4000 6600 4000
+Wire Wire Line
+	6600 4000 6600 3900
+Wire Wire Line
+	5750 3900 5600 3900
+Wire Wire Line
+	5600 3900 5600 3450
+Wire Wire Line
+	5600 3450 5850 3450
+Wire Wire Line
+	6600 3500 6600 3450
+Wire Wire Line
+	6600 3450 6250 3450
+Text Label 5950 3450 0    50   ~ 0
+220V
 $EndSCHEMATC
