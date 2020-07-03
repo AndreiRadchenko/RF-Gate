@@ -13,7 +13,7 @@
 
         cat ~/.ssh/id_rsa.pub
 
- - Create a new repository on the command line
+- Create a new repository on the command line
 
         echo "# WebMicGain" >> README.md
         git init
