@@ -12,6 +12,15 @@
 - View pc ssh key for copy to github:
 
         cat ~/.ssh/id_rsa.pub
+
+ - Create a new repository on the command line
+
+        echo "# WebMicGain" >> README.md
+        git init
+        git add README.md
+        git commit -m "first commit"
+        git remote add origin git@github.com:AndreiRadchenko/WebMicGain.git
+        git push -u origin master
         
 - Add remote repository:
 
