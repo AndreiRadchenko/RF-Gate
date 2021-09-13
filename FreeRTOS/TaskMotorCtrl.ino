@@ -8,9 +8,9 @@ const char STOPED2 = 'l';
 const char MOVING = 'm';
 const char STARTMOTOR1 = 'n';
 const char STARTMOTOR2 = 'o';
-const int LEAFDELAY = 3000; //ms delay beetvin leaf opening
-const int LEAFDELAY1 = 3000; //ms delay beetvin leaf closing
-const int MOTORSTARTDELAY = 3000; //ms delay beetvin leaf opening
+const int LEAFDELAY = 5000; //ms delay beetvin leaf opening
+const int LEAFDELAY1 = 5000; //ms delay beetvin leaf closing
+const int MOTORSTARTDELAY = 5000; //ms delay beetvin leaf opening
 
 void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a Task.
 {

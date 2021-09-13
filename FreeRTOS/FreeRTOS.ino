@@ -102,16 +102,16 @@ void setup() {
   if (structQueue != NULL) { // Create task that consumes the queue if it was created.
 
   xTaskCreate(
-    TaskAnalogRead
-    ,  (const portCHAR *) "AnalogRead"
-    ,  128  // Stack size
-    ,  NULL
-    ,  2  // Priority
-    ,  NULL );
+    TaskAnalogRead,
+      "AnalogRead",
+      128,  // Stack size
+      NULL,
+      2,  // Priority
+      NULL );
 
   xTaskCreate(
     TaskRfRead
-    ,  (const portCHAR *) "RfRead"  // A name just for humans
+    ,  "RfRead"  // A name just for humans
     ,  128  // This stack size can be checked & adjusted by reading the Stack Highwater
     ,  NULL
     ,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
@@ -119,7 +119,8 @@ void setup() {
 
   xTaskCreate(
     TaskMotorCtrl
-    ,  (const portCHAR *) "MotorCtrl"  // A name just for humans
+    //,  (const portCHAR *) "MotorCtrl"  // A name just for humans
+    ,  "MotorCtrl"
     ,  128  // This stack size can be checked & adjusted by reading the Stack Highwater
     ,  NULL
     ,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
