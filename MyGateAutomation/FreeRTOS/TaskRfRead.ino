@@ -17,6 +17,15 @@ const int CLOSECOD1 = 4178724;
 const int OPENCOD2 = 8902696;
 const int CLOSECOD2 = 8902692;
 
+/*service rf code for gate timers calibration*/
+const int OPENCOD_LEFT = 7178738;
+const int CLOSECOD_LEFT = 7178734;
+const int STOPCOD_LEFT = 7178730;
+
+const int OPENCOD_RIGHT = 8178758;
+const int CLOSECOD_RIGHT = 8178754;
+const int STOPCOD_RIGHT = 8178750;
+
 //const int KEYC1 = 4178722
 //const int KEYC2 = 8902690;;
 //const int OPENCOD2 = 3021444; //RF-Bridge RFKey15
@@ -69,13 +78,13 @@ void TaskRfRead( void *pvParameters __attribute__((unused)) )  // This is a Task
           mySensor.TaskType = TASKRF;
           mySensor.value =  START;  
           xQueueSend(structQueue, &mySensor, portMAX_DELAY);
-          vTaskDelay(1000 / portTICK_PERIOD_MS);      
+          vTaskDelay(100 / portTICK_PERIOD_MS);      
         };
     if (value == CLOSECOD1 || value == CLOSECOD2) {
           mySensor.TaskType = TASKRF;
           mySensor.value =  REVERS;
           xQueueSend(structQueue, &mySensor, portMAX_DELAY);
-          vTaskDelay(1000 / portTICK_PERIOD_MS);        
+          vTaskDelay(100 / portTICK_PERIOD_MS);        
         };
         
     //vTaskDelay(1000 / portTICK_PERIOD_MS);  // one tick delay (15ms) in between reads for stability

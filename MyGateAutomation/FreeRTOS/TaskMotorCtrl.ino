@@ -58,18 +58,17 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
           digitalWrite(LED_BUILTIN, LOW);    
       
       if (element.value == START && currentState == CLOSED){
-        
-        digitalWrite(MOTOR1PIN1, LOW);
-        digitalWrite(MOTOR1PIN2, HIGH);
-        digitalWrite(LAMPPIN, LOW);
+ 
+        openMotor1();
+        lampON();
         Leaf1State = MOVING;
         currentState = OPENING;
-        vTaskDelay(LEAFDELAY / portTICK_PERIOD_MS);
+        vTaskDelay(LEAFDELAY / portTICK_PERIOD_MS); //mast be replaced by timer
         xQueueReset(structQueue);
         digitalWrite(MOTOR2PIN1, LOW);
         digitalWrite(MOTOR2PIN2, HIGH);             
         Leaf2State = MOVING;
-        vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
+        //vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
         xQueueReset(structQueue);
       }
       else if (element.value == START && currentState == OPENING) {
@@ -115,7 +114,7 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
         currentState = CLOSING;
         Leaf1State = MOVING;
         Leaf2State = MOVING;
-        vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
+        vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);  //replace by timer
         xQueueReset(structQueue);
       }
       else if (element.value == REVERS && currentState == OPENING) {

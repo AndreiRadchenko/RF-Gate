@@ -2,6 +2,7 @@
 #include <semphr.h>  // add the FreeRTOS functions for Semaphores (or Flags).
 #include <RCSwitch.h>
 #include "ACS712.h"
+#include "MotorFunction.h"
 
 // Include queue support
 #include <queue.h>
@@ -33,14 +34,6 @@ struct sensor {  //struct for transfer data from poll tasks to TaskMotorCtrl
 };
 
 QueueHandle_t structQueue;
-
-#define MOTOR1PIN1 4
-#define MOTOR1PIN2 5
-#define MOTOR2PIN1 6
-#define MOTOR2PIN2 7
-
-#define LAMPPIN 8
-
 
 const char TASKRF = '1';
 const char TASKDIGITAL = '2';
