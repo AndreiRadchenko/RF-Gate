@@ -92,3 +92,7 @@
         -r recurses into subdirectories. Combined with --full-tree, this gives you all committed, tracked files.
         --name-only removes SHA / permission info for when you just want the file paths.
         HEAD specifies which branch you want the list of tracked, committed files for. You could change this to master or any other branch name, but HEAD is the commit you have checked out right now.
+        
+- Downloads new changes from the branch named master on the remote named origin and integrates them into your local HEAD branch.
+        
+        git pull origin master
