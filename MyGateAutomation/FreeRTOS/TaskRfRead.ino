@@ -86,7 +86,43 @@ void TaskRfRead( void *pvParameters __attribute__((unused)) )  // This is a Task
           xQueueSend(structQueue, &mySensor, portMAX_DELAY);
           vTaskDelay(100 / portTICK_PERIOD_MS);        
         };
+    if (value == OPENCOD_LEFT) {
+          mySensor.TaskType = TASKRF;
+          mySensor.value =  OPEN_LEFT;
+          xQueueSend(structQueue, &mySensor, portMAX_DELAY);
+          vTaskDelay(100 / portTICK_PERIOD_MS);        
+        };
+    if (value == CLOSECOD_LEFT) {
+          mySensor.TaskType = TASKRF;
+          mySensor.value =  CLOSE_LEFT;
+          xQueueSend(structQueue, &mySensor, portMAX_DELAY);
+          vTaskDelay(100 / portTICK_PERIOD_MS);        
+        };        
+    if (value == STOPCOD_LEFT) {
+          mySensor.TaskType = TASKRF;
+          mySensor.value =  STOP_LEFT;
+          xQueueSend(structQueue, &mySensor, portMAX_DELAY);
+          vTaskDelay(100 / portTICK_PERIOD_MS);        
+        };    
         
+    if (value == OPENCOD_RIGHT) {
+          mySensor.TaskType = TASKRF;
+          mySensor.value =  OPEN_RIGHT;
+          xQueueSend(structQueue, &mySensor, portMAX_DELAY);
+          vTaskDelay(100 / portTICK_PERIOD_MS);        
+        };
+    if (value == CLOSECOD_RIGHT) {
+          mySensor.TaskType = TASKRF;
+          mySensor.value =  CLOSE_RIGHT;
+          xQueueSend(structQueue, &mySensor, portMAX_DELAY);
+          vTaskDelay(100 / portTICK_PERIOD_MS);        
+        };        
+    if (value == STOPCOD_RIGHT) {
+          mySensor.TaskType = TASKRF;
+          mySensor.value =  STOP_RIGHT;
+          xQueueSend(structQueue, &mySensor, portMAX_DELAY);
+          vTaskDelay(100 / portTICK_PERIOD_MS);        
+        };     
     //vTaskDelay(1000 / portTICK_PERIOD_MS);  // one tick delay (15ms) in between reads for stability
     //};
     

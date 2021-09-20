@@ -3,6 +3,7 @@
 #include <RCSwitch.h>
 #include "ACS712.h"
 #include "MotorFunction.h"
+#include <timers.h>
 
 // Include queue support
 #include <queue.h>
@@ -18,13 +19,8 @@ QueueHandle_t integerQueue;
 SemaphoreHandle_t xSerialSemaphore;
 RCSwitch mySwitch = RCSwitch();
 
-// We have 30 amps version sensor connected to A0 pin of arduino
-// Replace with your version if necessary
-ACS712 currentSensor1(ACS712_30A, A0);
-ACS712 currentSensor2(ACS712_30A, A1);
-
 // define four Tasks for DigitalRead & AnalogRead
-void TaskAnalogRead( void *pvParameters );
+void TaskTimers( void *pvParameters );
 void TaskRfRead( void *pvParameters );
 void TaskMotorCtrl( void *pvParameters );
 
@@ -37,11 +33,22 @@ QueueHandle_t structQueue;
 
 const char TASKRF = '1';
 const char TASKDIGITAL = '2';
-const char TASKANALOG = '3';
+const char TASKTIMER = '3';
 const char TASKMOTORCTRL = '4';
 const char START = 'a'; //00001010
 const char STOP = 'b';
 const char REVERS = 'c'; //00000101
+
+const char OPEN_LEFT = 'd';
+const char CLOSE_LEFT = 'e';
+const char STOP_LEFT = 'f';
+const char OPEN_RIGHT = 'g';
+const char CLOSE_RIGHT = 'h';
+const char STOP_RIGHT = 'k';
+
+TimerHandle_t motor1OpenTimer, motor2OpenTimer, motor1CloseTimer, motor2CloseTimer;
+//void motor1TimerCallback(TimerHandle_t xTimer);
+//void motor2TimerCallback(TimerHandle_t xTimer);
 
 // the setup function runs once when you press reset or power the board
 void setup() {
@@ -65,16 +72,6 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB, on LEONARDO, MICRO, YUN, and other 32u4 based boards.
   }
 
-  // calibrate() method calibrates zero point of sensor,
-  // It is not necessary, but may positively affect the accuracy
-  // Ensure that no current flows through the sensor at this moment
-  // If you are not sure that the current through the sensor will not leak during calibration - comment out this method
-  currentSensor1.calibrate();
-  delay(10);
-  currentSensor2.calibrate();
-  delay(10);
-  
-  
   // Semaphores are useful to stop a Task proceeding, where it should be paused to wait,
   // because it is sharing a resource, such as the Serial port.
   // Semaphores should only be used whilst the scheduler is running, but we can set it up here.
@@ -85,6 +82,11 @@ void setup() {
       xSemaphoreGive( ( xSerialSemaphore ) );  // Make the Serial Port available for use, by "Giving" the Semaphore.
   }
 
+
+  motor1OpenTimer = xTimerCreate("OpenTimerMotor1", OPENTIME1, pdFALSE, 0, motor1TimerCallback);
+  motor2OpenTimer = xTimerCreate("OpenTimerMotor2", OPENTIME2, pdFALSE, 0, motor2TimerCallback);
+  motor1CloseTimer = xTimerCreate("CloseTimerMotor1", CLOSETIME1, pdFALSE, 0, motor1TimerCallback);
+  motor2CloseTimer = xTimerCreate("CloseTimerMotor2", CLOSETIME2, pdFALSE, 0, motor2TimerCallback);
     /**
    * Create a queue.
    * https://www.freertos.org/a00116.html
@@ -94,22 +96,14 @@ void setup() {
                               );
   if (structQueue != NULL) { // Create task that consumes the queue if it was created.
 
-  xTaskCreate(
-    TaskAnalogRead
-    ,  "AnalogRead"
-    ,  128  // Stack size
-    ,  NULL
-    ,  2  // Priority
-    ,  NULL );
-
-  xTaskCreate(
+/*  xTaskCreate(
     TaskTimers
     ,  "Timers"
     ,  128  // Stack size
     ,  NULL
     ,  2  // Priority
     ,  NULL );
-
+*/
   xTaskCreate(
     TaskRfRead
     ,  "RfRead"  // A name just for humans
@@ -136,6 +130,44 @@ void loop()
   // Empty. Things are done in Tasks.
 }
 
-/*--------------------------------------------------*/
-/*---------------------- Tasks ---------------------*/
-/*--------------------------------------------------*/
+void motor1TimerCallback(TimerHandle_t xTimer) {
+  stopMotor1();
+  Leaf1State = STOPED;
+  if ( currentState == OPENING ) {
+    OPENTIME1 = 1;
+    CLOSETIME1 = MOTOR1CLOSEPERIOD;
+    if ( Leaf2State == STOPED ) {
+      currentState = OPENED;
+      lampOFF();
+    };
+  }
+  else if ( currentState == CLOSING ) {
+    OPENTIME1 = MOTOR1PERIOD;
+    CLOSETIME1 = 1;
+    if ( Leaf2State == STOPED ) {
+      currentState = CLOSED;
+      lampOFF();               
+    };
+  };
+};
+
+void motor2TimerCallback(TimerHandle_t xTimer) {
+  stopMotor2();
+  Leaf2State = STOPED;
+  if ( currentState == OPENING ) {
+    OPENTIME2 = 1;
+    CLOSETIME2 = MOTOR2CLOSEPERIOD;
+    if ( Leaf1State == STOPED ) {
+       currentState = OPENED;
+       lampOFF();
+    };
+  }
+  else if ( currentState == CLOSING ) {
+    OPENTIME2 = MOTOR2PERIOD;
+    CLOSETIME2 = 1;
+    if ( Leaf1State == STOPED ){
+       currentState = CLOSED;
+       lampOFF();
+    };
+  };
+};

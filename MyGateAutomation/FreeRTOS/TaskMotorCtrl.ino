@@ -1,16 +1,7 @@
-const char OPENING = 'd';
-const char OPENED = 'e';
-const char CLOSING = 'f';
-const char CLOSED = 'g';
-const char STOPED = 'j';
-const char STOPED1 = 'k';
-const char STOPED2 = 'l';
-const char MOVING = 'm';
-const char STARTMOTOR1 = 'n';
-const char STARTMOTOR2 = 'o';
-const int LEAFDELAY = 3000; //ms delay beetvin leaf opening
-const int LEAFDELAY1 = 3000; //ms delay beetvin leaf closing
-const int MOTORSTARTDELAY = 3000; //ms delay beetvin leaf opening
+
+const int LEAFDELAY = 4000; //ms delay beetvin leaf opening
+const int LEAFDELAY1 = 4000; //ms delay beetvin leaf closing
+//const int MOTORSTARTDELAY = 3000; //ms delay beetvin leaf opening
 
 void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a Task.
 {
@@ -19,10 +10,12 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
   //char value;  
   //mySensor.TaskType = TASKMOTORCTRL;
   
-  char currentState = STOPED;
-  char Leaf1State = MOVING;
-  char Leaf2State = MOVING;
+  //char currentState = STOPED;
+  currentState = CLOSED;
+  Leaf1State = MOVING;
+  Leaf2State = MOVING;
   int led = LOW;
+  TickType_t xRemainingTime;
   
   for (;;)
   {
@@ -37,9 +30,17 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
       // so we don't want it getting stolen during the middle of a conversion.
       // print out the value you read:
       Serial.print("TaskMotorCtrl currentState: ");
-      //Serial.print("currentState: ");
       Serial.println(currentState);
- 
+      
+      Serial.print("motor1OpenTimer: ");
+      Serial.println(OPENTIME1*portTICK_PERIOD_MS);
+      Serial.print("motor1CloseTimer: ");
+      Serial.println(CLOSETIME1*portTICK_PERIOD_MS);
+      
+      Serial.print("motor2OpenTimer: ");
+      Serial.println(OPENTIME2*portTICK_PERIOD_MS);
+      Serial.print("motor2CloseTimer: ");
+      Serial.println(CLOSETIME2*portTICK_PERIOD_MS);
       Serial.println("----------------");
       
     xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
@@ -60,97 +61,153 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
       if (element.value == START && currentState == CLOSED){
  
         openMotor1();
+        //xTimerStart(motor1OpenTimer, 0);
+        xTimerChangePeriod(motor1OpenTimer, OPENTIME1, 10);
+        //start_time1 = millis();
         lampON();
         Leaf1State = MOVING;
         currentState = OPENING;
         vTaskDelay(LEAFDELAY / portTICK_PERIOD_MS); //mast be replaced by timer
         xQueueReset(structQueue);
-        digitalWrite(MOTOR2PIN1, LOW);
-        digitalWrite(MOTOR2PIN2, HIGH);             
+        openMotor2();
+        xTimerChangePeriod(motor2OpenTimer, OPENTIME2, 10);
+        //xTimerStart(motor2OpenTimer, 0);
+        //start_time2 = millis();             
         Leaf2State = MOVING;
         //vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
         xQueueReset(structQueue);
       }
       else if (element.value == START && currentState == OPENING) {
-        digitalWrite(MOTOR1PIN1, HIGH);
-        digitalWrite(MOTOR1PIN2, HIGH);
-        digitalWrite(MOTOR2PIN1, HIGH);
-        digitalWrite(MOTOR2PIN2, HIGH);
-        digitalWrite(LAMPPIN, HIGH);
+
+        xRemainingTime = xTimerGetExpiryTime( motor1OpenTimer ) - xTaskGetTickCount();
+        OPENTIME1 = xRemainingTime;
+        CLOSETIME1 = (MOTOR1PERIOD - OPENTIME1)*CLOSECOEF1;//we should calculate closing time, that is longer then was open time
+        xTimerStop (motor1OpenTimer, 10);
+        stopMotor1();
+
+        xRemainingTime = xTimerGetExpiryTime( motor2OpenTimer ) - xTaskGetTickCount();
+        OPENTIME2 = xRemainingTime;
+        CLOSETIME2 = (MOTOR2PERIOD - OPENTIME2)*CLOSECOEF2;
+        xTimerStop (motor2OpenTimer, 10);
+        stopMotor2();
+        
+        lampOFF();
         currentState = STOPED;
       }
       else if (element.value == START && currentState == STOPED) {
-        digitalWrite(MOTOR1PIN1, LOW);
-        digitalWrite(MOTOR1PIN2, HIGH);
-        digitalWrite(MOTOR2PIN1, LOW);
-        digitalWrite(MOTOR2PIN2, HIGH);
-        digitalWrite(LAMPPIN, LOW);
+        xTimerChangePeriod(motor1OpenTimer, OPENTIME1, 10);
+        openMotor1();
+        xTimerChangePeriod(motor2OpenTimer, OPENTIME2, 10);
+        openMotor2();
+        lampON();
         currentState = OPENING;
         Leaf1State = MOVING;
         Leaf2State = MOVING;
-        vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
+        //vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
         xQueueReset(structQueue);
       }
       else if (element.value == START && currentState == OPENED) {
         
       }
       else if (element.value == START && currentState == CLOSING) {
-        digitalWrite(MOTOR1PIN1, HIGH);
-        digitalWrite(MOTOR1PIN2, HIGH);
-        digitalWrite(MOTOR2PIN1, HIGH);
-        digitalWrite(MOTOR2PIN2, HIGH);
-        digitalWrite(LAMPPIN, HIGH);
+        xRemainingTime = xTimerGetExpiryTime( motor1CloseTimer ) - xTaskGetTickCount();
+        CLOSETIME1 = xRemainingTime;
+        OPENTIME1 = (MOTOR1CLOSEPERIOD - CLOSETIME1)/CLOSECOEF1;
+        xTimerStop (motor1CloseTimer, 10);
+        stopMotor1();
+
+        xRemainingTime = xTimerGetExpiryTime( motor2CloseTimer ) - xTaskGetTickCount();
+        CLOSETIME2 = xRemainingTime;
+        OPENTIME2 = (MOTOR2CLOSEPERIOD - CLOSETIME2)/CLOSECOEF2;
+        xTimerStop (motor2CloseTimer, 10);
+        stopMotor2();
+        lampOFF();
         currentState = STOPED;
       }
       else if (element.value == REVERS && currentState == CLOSED){
         
       }
       else if (element.value == REVERS && currentState == STOPED){
-        digitalWrite(MOTOR2PIN1, HIGH);
-        digitalWrite(MOTOR2PIN2, LOW);
-        digitalWrite(MOTOR1PIN1, HIGH);
-        digitalWrite(MOTOR1PIN2, LOW);
-        digitalWrite(LAMPPIN, LOW);
+        xTimerChangePeriod(motor1CloseTimer, CLOSETIME1, 10);
+        closeMotor1();
+        xTimerChangePeriod(motor2CloseTimer, CLOSETIME2, 10);
+        closeMotor2();
+        lampON();
         currentState = CLOSING;
         Leaf1State = MOVING;
         Leaf2State = MOVING;
-        vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);  //replace by timer
+        //vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);  //replace by timer
         xQueueReset(structQueue);
       }
       else if (element.value == REVERS && currentState == OPENING) {
-        digitalWrite(MOTOR1PIN1, HIGH);
-        digitalWrite(MOTOR1PIN2, HIGH);
-        digitalWrite(MOTOR2PIN1, HIGH);
-        digitalWrite(MOTOR2PIN2, HIGH);
-        digitalWrite(LAMPPIN, HIGH);
+        xRemainingTime = xTimerGetExpiryTime( motor1OpenTimer ) - xTaskGetTickCount();
+        OPENTIME1 = xRemainingTime;
+        CLOSETIME1 = (MOTOR1PERIOD - OPENTIME1)*CLOSECOEF1;
+        xTimerStop (motor1OpenTimer, 10);
+        stopMotor1();
+
+        xRemainingTime = xTimerGetExpiryTime( motor2OpenTimer ) - xTaskGetTickCount();
+        OPENTIME2 = xRemainingTime;
+        CLOSETIME2 = (MOTOR2PERIOD - OPENTIME2)*CLOSECOEF2;
+        xTimerStop (motor2OpenTimer, 10);
+        stopMotor2();
+        lampOFF();
         currentState = STOPED;
       }
       else if (element.value == REVERS && currentState == OPENED) {
-        digitalWrite(MOTOR2PIN1, HIGH);
-        digitalWrite(MOTOR2PIN2, LOW);
-        digitalWrite(LAMPPIN, LOW);
+        xTimerChangePeriod(motor2CloseTimer, CLOSETIME2, 10);
+        closeMotor2();
+        lampON();
         currentState = CLOSING;
-        vTaskDelay(LEAFDELAY1 / portTICK_PERIOD_MS);
+        vTaskDelay(LEAFDELAY1 / portTICK_PERIOD_MS);// replace by timer
         xQueueReset(structQueue);
-        digitalWrite(MOTOR1PIN1, HIGH);
-        digitalWrite(MOTOR1PIN2, LOW);        
+
+        xTimerChangePeriod(motor1CloseTimer, CLOSETIME1, 10);
+        closeMotor1();    
         Leaf1State = MOVING;
         Leaf2State = MOVING;
-        vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
+        //vTaskDelay(MOTORSTARTDELAY / portTICK_PERIOD_MS);
         xQueueReset(structQueue);
       }
       else if (element.value == REVERS && currentState == CLOSING) {
-        digitalWrite(MOTOR1PIN1, HIGH);
-        digitalWrite(MOTOR1PIN2, HIGH);
-        digitalWrite(MOTOR2PIN1, HIGH);
-        digitalWrite(MOTOR2PIN2, HIGH);
-        digitalWrite(LAMPPIN, HIGH);
+        xRemainingTime = xTimerGetExpiryTime( motor1CloseTimer ) - xTaskGetTickCount();
+        CLOSETIME1 = xRemainingTime;
+        OPENTIME1 = (MOTOR1CLOSEPERIOD - CLOSETIME1)/CLOSECOEF1;
+        xTimerStop (motor1CloseTimer, 10);
+        stopMotor1();
+
+        xRemainingTime = xTimerGetExpiryTime( motor2CloseTimer ) - xTaskGetTickCount();
+        CLOSETIME2 = xRemainingTime;
+        OPENTIME2 = (MOTOR2CLOSEPERIOD - CLOSETIME2)/CLOSECOEF2;
+        xTimerStop (motor2CloseTimer, 10);
+        stopMotor2();
+        lampOFF();
         currentState = STOPED;
-      };             
+      }
+
+      else if (element.value == OPEN_LEFT) {
+        openMotor1();
+      }
+      else if (element.value == CLOSE_LEFT) {
+        closeMotor1();
+      }
+      else if (element.value == STOP_LEFT) {
+        stopMotor1();
+      }
+
+      else if (element.value == OPEN_RIGHT) {
+        openMotor2();
+      } 
+      else if (element.value == CLOSE_RIGHT) {
+        closeMotor2();
+      }
+      else if (element.value == STOP_RIGHT) {
+        stopMotor2();
+      };
     }
-    else if (element.TaskType == TASKANALOG) {
+    else if (element.TaskType == TASKTIMER) {
       
-      switch (element.value) {
+/*      switch (element.value) {
               case OWERLOAD12:          // owercurrent due to obstacle
                          
                     digitalWrite(MOTOR1PIN1, HIGH);
@@ -202,7 +259,7 @@ void TaskMotorCtrl( void *pvParameters __attribute__((unused)) )  // This is a T
               case NORMAL:          // 
               break;
       }
-      
+*/      
     };
     
     vTaskDelay(1);  // one tick delay (15ms) in between reads for stability
