@@ -8,10 +8,20 @@
         sudo chmod ugo+rw /dev/ttyUSB0
         
 ### Git help:
-- Create remote repository:
+- Create remote reposit
+- Generating a new SSH key:
+
+       $ ssh-keygen -t ed25519 -C "your_email@example.com"
+
+- Adding your SSH key to the ssh-agent:
+
+       $ eval "$(ssh-agent -s)"
+       $ ssh-add ~/.ssh/id_ed25519
+
+- Add your SSH key from <user>/.ssh/id_ed25519.pub to github
 - View pc ssh key for copy to github:
 
-        cat ~/.ssh/id_rsa.pub
+       cat ~/.ssh/id_rsa.pub
 
 - Create a new repository on the command line
 
@@ -25,6 +35,11 @@
 - Add remote repository:
 
         git remote add origin git@github.com:AndreiRadchenko/RF-Gate.git
+        
+- If $ git pull origin [repo]
+fatal: refusing to merge unrelated histories, try 
+        
+        $ git pull origin [repo] --allow-unrelated-histories
 
 - Add files and folders to local git:
 
