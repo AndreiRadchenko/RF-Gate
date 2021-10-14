@@ -111,3 +111,17 @@ fatal: refusing to merge unrelated histories, try
 - Downloads new changes from the branch named master on the remote named origin and integrates them into your local HEAD branch.
         
         git pull origin master
+        
+- If your have no access to git.hub over ssh:
+        
+        sudo nano ~/.ssh/config
+        
+  add next strigs:
+        
+        Host github.com
+         Hostname ssh.github.com
+         Port 443
+
+  to check connection:
+        
+        ssh -T git@github.com
