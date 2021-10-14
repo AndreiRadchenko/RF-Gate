@@ -125,3 +125,7 @@ fatal: refusing to merge unrelated histories, try
   to check connection:
         
         ssh -T git@github.com
+        
+- To change remote repositoriy:
+        
+        git remote set-url origin git@github.com:<Username>/<Project>.git
